@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FluxViewer</title>
+<meta name="description" content="FluxViewer is under construction. Launching soon.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='7' fill='none' stroke='%23888' stroke-width='2'/></svg>">
+<style>
+  :root {
+    --bg:        #fbfaf8;
+    --bg-glow:   rgba(0, 0, 0, .035);
+    --ink:       #16171a;
+    --ink-muted: #6b6d73;
+    --ink-faint: #a0a2a8;
+    --rule:      rgba(22, 23, 26, .12);
+    --accent:    #3d5a80;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #0c0d0f;
+      --bg-glow:   rgba(255, 255, 255, .05);
+      --ink:       #f2f1ef;
+      --ink-muted: #96989e;
+      --ink-faint: #5c5e64;
+      --rule:      rgba(242, 241, 239, .14);
+      --accent:    #8fb3d9;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:        #0c0d0f;
+    --bg-glow:   rgba(255, 255, 255, .05);
+    --ink:       #f2f1ef;
+    --ink-muted: #96989e;
+    --ink-faint: #5c5e64;
+    --rule:      rgba(242, 241, 239, .14);
+    --accent:    #8fb3d9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    padding: 0 16px;
+    background: var(--bg);
+    background-image: radial-gradient(120% 90% at 50% 0%, var(--bg-glow) 0%, transparent 60%);
+    color: var(--ink);
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100svh;
+  }
+
+  main {
+    width: 100%;
+    max-width: 480px;
+    animation: rise .9s cubic-bezier(.22, .61, .36, 1) both;
+  }
+
+  .eyebrow {
+    margin: 0 0 28px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(38px, 11vw, 58px);
+    font-weight: 300;
+    letter-spacing: -.035em;
+    line-height: 1.02;
+  }
+
+  h1 em {
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .meter {
+    position: relative;
+    height: 1px;
+    margin: 32px 0;
+    background: var(--rule);
+    overflow: hidden;
+  }
+
+  .meter::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 38%;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: sweep 4.5s cubic-bezier(.65, 0, .35, 1) infinite;
+  }
+
+  p {
+    margin: 0;
+    max-width: 42ch;
+    color: var(--ink-muted);
+    text-wrap: pretty;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 36px;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: var(--ink-muted);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+
+  .contact {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--ink-faint);
+  }
+
+  a {
+    position: relative;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    opacity: .3;
+    transform-origin: left;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  a:hover::after,
+  a:focus-visible::after { opacity: 1; }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  footer {
+    margin-top: 56px;
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: var(--ink-faint);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes sweep {
+    0%        { transform: translateX(-100%); }
+    50%, 100% { transform: translateX(365%); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: .25; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Entranos</p>
+
+    <p>Test passed.</p>
+
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
